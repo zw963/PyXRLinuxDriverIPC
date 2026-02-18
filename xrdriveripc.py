@@ -491,3 +491,28 @@ class XRDriverIPC:
             return False
         
         return True
+
+    def is_driver_running(self, as_user=None):
+        try:
+            if as_user is not None:
+                # Use systemd user instance for the specified login. The XDG_RUNTIME_DIR must match that user's uid.
+                uid = subprocess.check_output(['id', '-u', as_user], stderr=subprocess.STDOUT).decode(errors='replace').strip()
+                cmd = f'XDG_RUNTIME_DIR=/run/user/{uid} systemctl --user is-active xr-driver'
+                output = subprocess.check_output(['su', '-l', '-c', cmd, as_user], stderr=subprocess.STDOUT)
+            else:
+                output = subprocess.check_output(['systemctl', '--user', 'is-active', 'xr-driver'], stderr=subprocess.STDOUT)
+
+            status = output.decode(errors='replace').strip().lower()
+            return status == 'active'
+        except subprocess.CalledProcessError as exc:
+            # systemctl returns non-zero when inactive/failed; treat as not running.
+            try:
+                out = exc.output.decode(errors='replace').strip()
+            except Exception:
+                out = str(exc.output)
+            if out:
+                self.logger.error(f"Error checking driver status: {out}")
+            return False
+        except Exception as e:
+            self.logger.error(f"Error checking driver status {e}")
+            return False
