@@ -367,7 +367,9 @@ class XRDriverIPC:
 
     def _license_features_view(self, license):
         features = {}
-        for key, value in license['features'].items():
+
+        license_features = license.get('features') or {}
+        for key, value in license_features.items():
             is_enabled = value['status'] != 'off'
             features[key] = {
                 'is_enabled': is_enabled,
