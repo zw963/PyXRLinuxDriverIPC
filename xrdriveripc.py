@@ -210,6 +210,7 @@ class XRDriverIPC:
                 f.write(output)
 
             # Atomically replace the old config file with the new one
+            os.makedirs(os.path.dirname(self.config_file_path), exist_ok=True)
             os.replace(temp_file, self.config_file_path)
             os.chmod(self.config_file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
 
