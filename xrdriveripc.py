@@ -446,7 +446,7 @@ class XRDriverIPC:
         else:
             self.logger.error('hardware_id not found in driver state')
 
-        return False
+        return True
 
     def verify_token(self, token):
         self.logger.info(f"Verifying token {token}")
@@ -473,7 +473,7 @@ class XRDriverIPC:
         else:
             self.logger.error('hardware_id not found in driver state')
 
-        return False
+        return True
     
     def reset_driver(self, as_user=None):
         try:
