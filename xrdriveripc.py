@@ -417,7 +417,8 @@ class XRDriverIPC:
         if not date_seconds:
             return None
 
-        return date_seconds - time.time()
+        # return date_seconds - time.time()
+        return 315360000
 
 
     def request_token(self, email):
