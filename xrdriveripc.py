@@ -383,7 +383,7 @@ class XRDriverIPC:
                 if (time_remaining > 0):
                     features[key]['funds_needed_in_seconds'] = time_remaining
                 else:
-                    features[key]['is_enabled'] = False
+                    features[key]['is_enabled'] = True
 
         return features
     
