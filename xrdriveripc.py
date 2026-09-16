@@ -183,6 +183,9 @@ class XRDriverIPC:
                             parser = CONFIG_ENTRIES[key][CONFIG_PARSER_INDEX]
                             default_val = CONFIG_ENTRIES[key][CONFIG_DEFAULT_VALUE_INDEX]
                             config[key] = parser(value, default_val)
+                        else:
+                            # unrecognized entries don't have a parser, just copy them as strings
+                            config[key] = value
                     except Exception as e:
                         self.logger.error(f"Error parsing line {line}: {e}")
         except FileNotFoundError as e:
